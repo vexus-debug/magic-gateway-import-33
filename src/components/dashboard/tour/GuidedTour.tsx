@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useOrg } from "@/hooks/useOrg";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X, CheckCircle2, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -47,11 +49,15 @@ export function GuidedTour({ tour, open, onClose }: GuidedTourProps) {
   const [index, setIndex] = useState(0);
   const [rect, setRect] = useState<Rect | null>(null);
   const rafRef = useRef<number | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { basePath } = useOrg();
 
-  // Only keep steps whose target exists right now (plus target-less steps).
+  // Only keep steps whose target exists right now (plus target-less steps and
+  // steps that navigate to another page — their target appears after routing).
   const steps = useMemo(() => {
     if (!open) return tour.steps;
-    return tour.steps.filter((s) => !s.target || findTarget(s) !== null);
+    return tour.steps.filter((s) => !s.target || s.path || findTarget(s) !== null);
   }, [open, tour.steps]);
 
   const total = steps.length;
