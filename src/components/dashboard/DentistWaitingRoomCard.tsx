@@ -101,7 +101,7 @@ export function DentistWaitingRoomCard({ staffId }: { staffId: string | null }) 
   };
 
   return (
-    <Card className="border-primary/30 bg-card">
+    <Card className="border-primary/30 bg-card" data-tour="dentist-waiting-room">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-base">
           <Users className="h-4 w-4 text-primary" /> Ready in waiting room

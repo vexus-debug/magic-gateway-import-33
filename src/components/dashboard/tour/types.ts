@@ -5,6 +5,12 @@ export interface TourStepDef {
    * Steps whose target is not present on screen are skipped automatically.
    */
   target?: string;
+  /**
+   * Route path after /clinic/:slug/ (e.g. "dental-charts"). When set, the
+   * tour navigates to that real page before highlighting the target, so the
+   * walk-through shows the actual screens the user works on.
+   */
+  path?: string;
   title: string;
   body: string;
   /** Preferred tooltip placement relative to the target. */

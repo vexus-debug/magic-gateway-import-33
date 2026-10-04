@@ -35,7 +35,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { PageTourButton } from "@/components/dashboard/tour/PageTourButton";
-import { DentistVisitWalkthrough } from "@/components/dashboard/tour/DentistVisitWalkthrough";
+import { GuidedTour } from "@/components/dashboard/tour/GuidedTour";
+import { dentistVisitTour } from "@/config/tours/dentist-visit";
 import { EyeTodayScreen } from "@/components/dashboard/eye/EyeTodayScreen";
 import { useAddToWaitingList } from "@/hooks/useWaitingList";
 import { DentistWaitingRoomCard } from "@/components/dashboard/DentistWaitingRoomCard";
@@ -301,7 +302,7 @@ function StandardDashboardHome() {
           {mode === "dentist" && <Button size="sm" variant="outline" onClick={() => setWalkOpen(true)}>Walk through a visit</Button>}
           <PageTourButton />
         </div>
-        {mode === "dentist" && <DentistVisitWalkthrough open={walkOpen} onOpenChange={setWalkOpen} />}
+        {mode === "dentist" && <GuidedTour tour={dentistVisitTour} open={walkOpen} onClose={() => setWalkOpen(false)} />}
       </div>
 
       {showOnboarding && (
