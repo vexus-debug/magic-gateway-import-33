@@ -25,7 +25,7 @@ export const dentistVisitTour: PageTour = {
       path: "dental-charts",
       target: '[data-tour="dental-charts-patient-select"]',
       title: "Open the patient's chart",
-      body: "Starting a visit brings you here with the patient already selected. You can also switch patients from this picker.",
+      body: "Starting a visit brings you here with the patient already selected. For this tour we've selected a demo patient — you can switch patients from this picker.",
     },
     {
       path: "dental-charts",
