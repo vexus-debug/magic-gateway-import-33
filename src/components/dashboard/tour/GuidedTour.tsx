@@ -78,7 +78,9 @@ export function GuidedTour({ tour, open, onClose }: GuidedTourProps) {
       const wanted = step.path === "" ? basePath : `${basePath}/${step.path}`;
       const current = location.pathname.replace(/\/$/, "");
       if (current !== wanted) {
-        navigate(wanted);
+        // Keep the query string (e.g. ?patientId=) so the selected patient
+        // survives cross-page tour steps.
+        navigate({ pathname: wanted, search: location.search });
       }
     }
     const start = performance.now();

@@ -49,6 +49,7 @@ import {
   useWeeklyAppointments,
 } from "@/hooks/useDashboardData";
 import { useOrg } from "@/hooks/useOrg";
+import { useWalkthroughPatient } from "@/hooks/useWalkthroughPatient";
 import { cn } from "@/lib/utils";
 
 type DashboardMode = "owner" | "dentist" | "receptionist";
@@ -219,6 +220,9 @@ function StandardDashboardHome() {
   const { currentOrg, basePath } = useOrg();
   const checkIn = useAddToWaitingList();
   const [walkOpen, setWalkOpen] = useState(false);
+  // The walkthrough tours real patient screens, which only render with a
+  // patient selected — so it runs against a phantom demo patient.
+  useWalkthroughPatient(walkOpen);
   const mode = roleMode(currentOrg?.role || "receptionist");
 
   const schedule = useMemo(() => {
