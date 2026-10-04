@@ -302,7 +302,7 @@ function StandardDashboardHome() {
           {mode === "dentist" && <Button size="sm" variant="outline" onClick={() => setWalkOpen(true)}>Walk through a visit</Button>}
           <PageTourButton />
         </div>
-        {mode === "dentist" && <DentistVisitWalkthrough open={walkOpen} onOpenChange={setWalkOpen} />}
+        {mode === "dentist" && <GuidedTour tour={dentistVisitTour} open={walkOpen} onClose={() => setWalkOpen(false)} />}
       </div>
 
       {showOnboarding && (
