@@ -69,17 +69,31 @@ export function GuidedTour({ tour, open, onClose }: GuidedTourProps) {
     setRect(el ? measure(el) : null);
   }, [step]);
 
-  // Scroll the current target into view, then track it while it settles.
+  // Navigate to the step's real page first (if it names one), then scroll the
+  // target into view and track it while it settles. After a navigation the
+  // target may mount asynchronously, so keep looking for up to 3s.
   useEffect(() => {
     if (!open || !step) return;
-    const el = findTarget(step);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+    if (step.path) {
+      const wanted = step.path === "" ? basePath : `${basePath}/${step.path}`;
+      const current = location.pathname.replace(/\/$/, "");
+      if (current !== wanted) {
+        navigate(wanted);
+      }
     }
     const start = performance.now();
+    let scrolled = false;
     const tick = () => {
+      const el = findTarget(step);
+      if (el && !scrolled) {
+        scrolled = true;
+        el.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+      }
       sync();
-      if (performance.now() - start < 900) {
+      const elapsed = performance.now() - start;
+      // Keep tracking while the page settles; keep searching longer when the
+      // target hasn't appeared yet (e.g. right after a page navigation).
+      if (elapsed < 900 || (!el && elapsed < 3000)) {
         rafRef.current = requestAnimationFrame(tick);
       }
     };
@@ -87,7 +101,7 @@ export function GuidedTour({ tour, open, onClose }: GuidedTourProps) {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [open, step, sync]);
+  }, [open, step, sync, basePath, location.pathname, navigate]);
 
   useEffect(() => {
     if (!open) return;
